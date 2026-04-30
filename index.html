@@ -1,8 +1,41 @@
-rules_version = '2';
-service cloud.firestore {
-  match /databases/{database}/documents {
-    match /{document=**} {
-      allow read, write: if true;
-    }
-  }
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+  <meta charset="UTF-8">
+  <title>ZEL - GESTÃO E SERVIÇOS ∴</title>
+</head>
+<body>
+
+<h1>🚀 Sistema ZEL Funcionando</h1>
+
+<ul id="lista"></ul>
+
+<script type="module">
+import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+import { getFirestore, collection, getDocs } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyBRT28Oa2gsqe7QsFA-2yTZXVLhPeryp48",
+  authDomain: "zel-gestao-4f2ca-bbafc.firebaseapp.com",
+  projectId: "zel-gestao-4f2ca-bbafc",
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getFirestore(app);
+
+const lista = document.getElementById("lista");
+
+async function carregar() {
+  const querySnapshot = await getDocs(collection(db, "funcionarios"));
+  querySnapshot.forEach((doc) => {
+    const li = document.createElement("li");
+    li.textContent = doc.data().nome;
+    lista.appendChild(li);
+  });
 }
+
+carregar();
+</script>
+
+</body>
+</html>
