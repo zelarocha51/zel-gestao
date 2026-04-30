@@ -1,27 +1,8 @@
-<!DOCTYPE html>
-<html lang="pt-BR">
-<head>
-<meta charset="UTF-8">
-<title>ZEL - GESTÃO E SERVIÇOS ∴</title>
-<style>
-body { font-family: Arial; background:#0f2f1f; color:white; }
-.header { background:#123d2a; padding:20px; font-size:24px; }
-.card { background:#1f4d36; margin:20px; padding:20px; border-radius:10px; }
-</style>
-</head>
-<body>
-<div class="header">ZEL - GESTÃO E SERVIÇOS ∴</div>
-
-<div class="card">
-<h2>Dashboard - Maricá RJ</h2>
-<p>Equipes ativas: 5</p>
-<p>Serviços em andamento: 12</p>
-</div>
-
-<div class="card">
-<h2>Responsável</h2>
-<p>Wallace Fontes ∴</p>
-</div>
-
-</body>
-</html>
+rules_version = '2';
+service cloud.firestore {
+  match /databases/{database}/documents {
+    match /{document=**} {
+      allow read, write: if true;
+    }
+  }
+}
