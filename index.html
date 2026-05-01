@@ -1,14 +1,42 @@
 <!DOCTYPE html>
 <html lang="pt-br">
 <head>
-  <meta charset="UTF-8">
-  <title>ZEL - GESTÃO E SERVIÇOS ∴</title>
+<meta charset="UTF-8">
+<title>ZEL - GESTÃO E SERVIÇOS ∴</title>
+
+<style>
+body {
+  font-family: Arial;
+  background: #1f2d2b;
+  color: white;
+  text-align: center;
+}
+
+h1 {
+  color: #00ff9d;
+}
+
+.card {
+  background: #2f3e3b;
+  margin: 10px auto;
+  padding: 15px;
+  border-radius: 10px;
+  width: 300px;
+}
+
+img {
+  width: 80px;
+  border-radius: 50%;
+}
+</style>
+
 </head>
 <body>
 
-<h1>🚀 Sistema ZEL Funcionando</h1>
+<h1>🚀 ZEL - GESTÃO E SERVIÇOS ∴</h1>
+<h3>Responsável: WALLACE FONTES</h3>
 
-<ul id="lista"></ul>
+<div id="lista"></div>
 
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
@@ -27,10 +55,21 @@ const lista = document.getElementById("lista");
 
 async function carregar() {
   const querySnapshot = await getDocs(collection(db, "funcionarios"));
+
   querySnapshot.forEach((doc) => {
-    const li = document.createElement("li");
-    li.textContent = doc.data().nome;
-    lista.appendChild(li);
+    const data = doc.data();
+
+    const div = document.createElement("div");
+    div.className = "card";
+
+    div.innerHTML = `
+      <img src="${data.fotos || 'https://via.placeholder.com/100'}">
+      <h2>${data.nome}</h2>
+      <p>${data.cargo || ''}</p>
+      <p>Status: ${data.status || ''}</p>
+    `;
+
+    lista.appendChild(div);
   });
 }
 
