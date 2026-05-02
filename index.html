@@ -1,80 +1,54 @@
-<!DOCTYPE html>
-<html lang="pt-br">
-<head>
-<meta charset="UTF-8">
-<title>ZEL - GESTÃO E SERVIÇOS ∴</title>
-
-<style>
-body {
-  font-family: Arial;
-  background: #1f2d2b;
-  color: white;
-  text-align: center;
-}
-
-h1 {
-  color: #00ff9d;
-}
-
-.card {
-  background: #2f3e3b;
-  margin: 10px auto;
-  padding: 15px;
-  border-radius: 10px;
-  width: 300px;
-}
-
-img {
-  width: 80px;
-  border-radius: 50%;
-}
-</style>
-
-</head>
-<body>
-
-<h1>🚀 ZEL - GESTÃO E SERVIÇOS ∴</h1>
-<h3>Responsável: WALLACE FONTES</h3>
-
-<div id="lista"></div>
-
 <script type="module">
 import { initializeApp } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-app.js";
+import { getAuth, signInWithEmailAndPassword } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-auth.js";
 import { getFirestore, collection, getDocs } from "https://www.gstatic.com/firebasejs/10.12.2/firebase-firestore.js";
 
 const firebaseConfig = {
-  apiKey: "AIzaSyBRT28Oa2gsqe7QsFA-2yTZXVLhPeryp48",
-  authDomain: "zel-gestao-4f2ca-bbafc.firebaseapp.com",
-  projectId: "zel-gestao-4f2ca-bbafc",
+  apiKey: "SUA_API_KEY",
+  authDomain: "SEU_DOMINIO",
+  projectId: "SEU_PROJECT_ID"
 };
 
 const app = initializeApp(firebaseConfig);
+const auth = getAuth(app);
 const db = getFirestore(app);
 
-const lista = document.getElementById("lista");
+// LOGIN
+window.fazerLogin = async function() {
+  const email = document.getElementById("email").value;
+  const senha = document.getElementById("senha").value;
 
+  try {
+    await signInWithEmailAndPassword(auth, email, senha);
+    document.getElementById("login").style.display = "none";
+    document.getElementById("sistema").style.display = "block";
+    carregar();
+  } catch (e) {
+    alert("Erro no login");
+  }
+};
+
+// CARREGAR DADOS
 async function carregar() {
+  const lista = document.getElementById("lista");
+  lista.innerHTML = "";
+
   const querySnapshot = await getDocs(collection(db, "funcionarios"));
 
-  querySnapshot.forEach((doc) => {
-    const data = doc.data();
+  querySnapshot.forEach((docItem) => {
+    const data = docItem.data();
 
     const div = document.createElement("div");
     div.className = "card";
 
     div.innerHTML = `
-      <img src="${data.fotos || 'https://via.placeholder.com/100'}">
-      <h2>${data.nome}</h2>
-      <p>${data.cargo || ''}</p>
-      <p>Status: ${data.status || ''}</p>
+      <img src="${data.foto}" width="80"><br>
+      <b>${data.nome}</b><br>
+      ${data.cargo}<br>
+      Status: ${data.status}
     `;
 
     lista.appendChild(div);
   });
 }
-
-carregar();
 </script>
-
-</body>
-</html>
